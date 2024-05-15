@@ -5,22 +5,24 @@
 #include <QDataStream>
 #include <QDebug>
 
-TcpServer::TcpServer(int port)
+TcpServer::TcpServer()
     : m_nNextBlockSize(0)
-//    , m_clients(new QList<QTcpSocket*>)
+    , m_clients(QList<QTcpSocket*>())
+    , m_tcpServer(new QTcpServer(this))
 {
-    m_tcpServer = new QTcpServer(this);
-    if(!m_tcpServer->listen(QHostAddress::Any, port)) {
+    if(!m_tcpServer->listen(QHostAddress::Any, 6547)) {
         qDebug()<<"Error "<<m_tcpServer->errorString();
         m_tcpServer->close();
-        return;
     }
-
-//    connect(m_tcpServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection));
+    else {
+        qDebug()<<"New server "<<m_tcpServer->serverAddress();
+        connect(m_tcpServer, &QTcpServer::newConnection, this, &TcpServer::newConnection);
+    }
 }
 
 void TcpServer::newConnection()
 {
+    qDebug()<<"newConnection";
     QTcpSocket *clientSocket = m_tcpServer->nextPendingConnection();
 
     connect(clientSocket, &QTcpSocket::disconnected, clientSocket, &QTcpSocket::deleteLater);
@@ -28,6 +30,7 @@ void TcpServer::newConnection()
     connect(clientSocket, &QTcpSocket::disconnected, this, &TcpServer::gotDisconnection);
 
     m_clients << clientSocket;
+    qDebug()<<"="<<m_clients;
 
     sendToClient(clientSocket, "Reply: connection established");
 }
@@ -37,6 +40,7 @@ void TcpServer::readClient()
     QTcpSocket *clientSocket = (QTcpSocket*)sender();
     QDataStream in(clientSocket);
     //in.setVersion(QDataStream::Qt_5_10);
+
     for (;;)
     {
         if (!m_nNextBlockSize)
@@ -49,7 +53,8 @@ void TcpServer::readClient()
         QString str;
         in >> str;
 
-        emit gotNewMesssage(str);
+        qDebug()<<"GOT: "<<str;
+//        emit gotNewMesssage(str);
 
         m_nNextBlockSize = 0;
 
@@ -62,6 +67,7 @@ void TcpServer::readClient()
 
 void TcpServer::gotDisconnection()
 {
+    qDebug()<<"gotDisconnection";
     m_clients.removeAt(m_clients.indexOf((QTcpSocket*)sender()));
     emit smbDisconnected();
 }
@@ -72,6 +78,7 @@ qint64 TcpServer::sendToClient(QTcpSocket *socket, const QString &str)
     QDataStream out(&arrBlock, QIODevice::WriteOnly);
     //out.setVersion(QDataStream::Qt_5_10);
     //out << quint16(0) << QTime::currentTime() << str;
+
     out << quint16(0) << str;
 
     out.device()->seek(0);

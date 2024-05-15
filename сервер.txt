@@ -1,0 +1,16 @@
+сервер
+https://decovar.dev/blog/2018/03/08/qt-client-server-qml/
+https://github.com/retifrav/qt-client-server/tree/master/client-server-qml/serverPart
+
+В окне программы TabView
+    -Dashboard
+        -пока вывести агент - статус
+    -Settings
+        -Agents
+            -список агентов 
+                имя - статус
+
+                Агент устанавливает соединение с сервером
+                    сервер сохраняет в БД имя и адрес
+                списком выводятся агенты полученные из БД?
+    

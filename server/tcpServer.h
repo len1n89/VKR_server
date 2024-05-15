@@ -1,8 +1,6 @@
 #ifndef TCPSERVER_H
 #define TCPSERVER_H
 
-#endif // TCPSERVER_H
-
 #include <QObject>
 
 class QTcpServer;
@@ -13,12 +11,11 @@ class TcpServer : public QObject
     Q_OBJECT
 
 public:
-    TcpServer(int port);
+    TcpServer();
     virtual ~TcpServer() {}
 
 public:
     QList<QTcpSocket *> getClients();
-
 
 public slots:
     virtual void newConnection();
@@ -36,3 +33,5 @@ private:
     QTcpServer *m_tcpServer;
 
 };
+
+#endif // TCPSERVER_H

@@ -20,5 +20,7 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
 
+    TcpServer *server = new TcpServer();
+
     return app.exec();
 }
