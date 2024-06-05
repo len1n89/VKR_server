@@ -14,19 +14,7 @@ Window {
         Tab {
             id: dashTab
             title: "Dashboard"
-            Row{
-                Text {
-                    id: agent
-                    text: qsTr("agent")
-                }
-                Text {
-                    text: qsTr(" - ")
-                }
-                Text {
-                    id: status
-                    text: qsTr("status")
-                }
-            }
+            DashView {}
         }
         Tab {
             id: setingsTab
@@ -40,20 +28,25 @@ Window {
                     title: "Agents"
                 }
                 Tab {
+                    title: "Metrics"
+                }
+                Tab {
+                    title: "Alerts"
+                }
+                Tab {
+                    title: "Tresholds"
+                }
+                Tab {
                     title: "DB"
                 }
                 Tab {
                     title: "Users"
+                    UsersView {}
                 }
                 Tab {
                     title: "Notifier"
                 }
             }
-        }
-
-        Tab {
-            title: "Green"
-            Rectangle { color: "green" }
         }
     }
 
