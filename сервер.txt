@@ -14,3 +14,14 @@ https://github.com/retifrav/qt-client-server/tree/master/client-server-qml/serve
                     сервер сохраняет в БД имя и адрес
                 списком выводятся агенты полученные из БД?
     
+
+  Регистрация клиента
+    клиент выполняет connectToServer(адрес, порт)
+      потом сервер сохраняет в БД агента (hostname), в сервере мониторинга обновление из БД 
+         и отображает в GUI именно агентов из сервера мониторинга
+
+
+         cat /proc/meminfo
+
+         https://man7.org/linux/man-pages/man2/sysinfo.2.html
+         https://habr.com/ru/companies/first/articles/647921/

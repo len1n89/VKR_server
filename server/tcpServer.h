@@ -6,6 +6,9 @@
 class QTcpServer;
 class QTcpSocket;
 
+//! \class TcpServer
+//! \brief Отвечает за установку соединения с агентами и передачу иформации
+
 class TcpServer : public QObject
 {
     Q_OBJECT
@@ -25,10 +28,12 @@ public slots:
 
 signals:
     void gotNewMesssage(QString msg);
-    void smbDisconnected();
+    //! отключился клиент номер index в списке m_clients, он уже удален!!!
+    void clientDisconnected(const int index);
 
 private:
     quint16 m_nNextBlockSize;
+    //! Массив подключенных на данный момент клиентов(сокетов)
     QList<QTcpSocket*> m_clients;
     QTcpServer *m_tcpServer;
 
